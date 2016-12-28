@@ -3,21 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Page;
-use Illuminate\Http\Request;
 use App\Template;
+use App\Image;
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
     public function __construct()
     {
-    	$this->middleware('auth');
+    	$this->middleware('auth', [
+            'except' => 'show'
+        ]);
     }
 
     public function create()
     {
         $templates = Template::all();
         $pages = Page::all();
-        return view('cms.pages.create', compact('templates', 'pages'));
+        $images = Image::all();
+        foreach($images as $image) {
+            if($image->category == 'default') $default[] = $image;
+            else if($image->category == 'small') $small[] = $image;
+            else if($image->category == 'medium') $medium[] = $image;
+            else if($image->category == 'large') $large[] = $image;
+        }
+        return view('cms.pages.create', compact('templates', 'pages', 'default', 'small', 'medium', 'large'));
     }
 
     public function store(Request $request)
@@ -36,7 +46,7 @@ class PageController extends Controller
 
     public function show($slug)
     {
-
+        return $slug;
     }
 
     public function index()

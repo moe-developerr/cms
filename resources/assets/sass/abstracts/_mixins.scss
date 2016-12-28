@@ -1,0 +1,176 @@
+@mixin respond-to($viewport)
+{
+	@if $viewport == 'xs' { @media all and (max-width: $xs) { @content; }	}
+	@if $viewport == 'sm' { @media all and (min-width: $sm-min) and (max-width: $sm-max) { @content; }	}
+	@if $viewport == 'md' { @media all and (min-width: $md-min) and (max-width: $md-max) { @content; }	}
+	@if $viewport == 'lg' { @media all and (min-width: $lg) { @content; }	}
+	@if $viewport == 'upto-sm' { @media all and (max-width: $sm-max) { @content; }	}
+	@if $viewport == 'upto-md' { @media all and (max-width: $md-max) { @content; }	}
+	@if $viewport == 'sm-to-md' { @media all and (min-width: $sm-min) and (max-width: $md-max) { @content; }	}
+	@if $viewport == 'sm-p' { @media all and (min-width: $sm-min) { @content; }	}
+	@if $viewport == 'md-p' { @media all and (min-width: $md-min) { @content; }	}
+}
+
+@mixin e($selector)
+{
+	&__#{$selector} { @content; }
+}
+
+@mixin m($selector)
+{
+	&--#{$selector} { @content; }
+}
+
+@mixin center-vertically()
+{
+	&:before {
+		content: ' ';
+		display: inline-block;
+		vertical-align: middle;
+		height: 100%;
+	}
+}
+
+@mixin rhombus($r: auto, $b: auto, $l: auto, $t: auto)
+{
+	transition: all $fast-t;
+	width: 0;
+	height: 0;
+	position: absolute;
+	#{$left}: if($l == 'auto', auto, $l + px);
+	top: if($t == 'auto', auto, $t + px);
+	#{$right}: if($r == 'auto', auto, $r + px);
+	bottom: if($b == 'auto', auto, $b + px);
+	&:before,
+	&:after {
+		content: '';
+		display: block;
+		border: 4.5px solid transparent;
+	}
+}
+
+@mixin line($width, $height: 1)
+{
+	transition: all $fast-t;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	width: $width + px;
+	height: $height + px;
+}
+
+@mixin arrow($width, $height: 1)
+{
+	&:before,
+	&:after {
+		content: '';
+		transition: all $fast-t;
+		display: inline-block;
+		vertical-align: middle;
+		width: $width + px;
+		height: $height + px;
+		position: absolute;
+	}
+}
+
+@mixin hamburger-btn()
+{
+	@extend .hamburger-btn-theme;
+	@extend .normalize--btn;
+	outline: none;
+	display: inline-block;
+	vertical-align: middle;
+
+	&:hover {
+		.line { margin-bottom: 7px; }
+		.line:first-child {
+			.rhombus-1 { #{$right}: 15px; }
+		}
+		.line:last-child {
+			.rhombus-1 { #{$right}: 35px; }
+		}
+	}
+
+	.line {
+		@include line(40, 1);
+		transition: margin $fast-t, transform $slow-t;
+		display: block;
+		margin-bottom: 10px;
+		&:last-of-type { margin-bottom: 0; }
+		&:first-child {
+			.rhombus-1 { @include rhombus(25, 9); }
+			.rhombus-2 { @include rhombus(35, 9); }
+		}
+		&:first-child + .line + .line {
+			.rhombus-1 { @include rhombus(15, 9); }
+		}
+	}
+}
+
+@mixin close-btn()
+{
+	@extend .close-btn-theme;
+	@extend .normalize--btn;
+	outline: none;
+	width: 52px;
+	height: 25px;
+
+	&:hover {
+		.line:first-child {
+			.rhombus-1 { #{$right}: 38px; }
+			.rhombus-2 { #{$right}: 30px; }
+		}
+	}
+
+	.line {
+		@include line(40, 1);
+		transition: all $slow-t;
+	}
+	.line:first-of-type {
+		transform: rotate(45deg);
+		bottom: 2px;
+		.rhombus-1 { @include rhombus(30, 9); }
+		.rhombus-2 { @include rhombus(38, 9); }
+	}
+	.line:last-of-type {
+		transform: rotate(-45deg);
+		bottom: 22px;
+	}
+}
+
+@mixin link-pseudos($color) {
+  &:link     { color: darken($color, 10%); }
+  &:visited  { color: darken($color, 20%); }
+  &:hover    { color: darken($color, 30%); }
+  &:active   { color: darken($color, 40%); }
+}
+
+@mixin rotate-center-vertically($rotation: -90deg)
+{
+	cursor: pointer;
+	font-weight: 600;
+	display: block;
+	position: absolute;
+	#{$left}: -5px;
+	top: 50%;
+	transform: if-ltr(rotate($rotation), rotate(-$rotation));
+	&:before {
+		content: '';
+		display: block;
+		width: 0;
+		height: 0;
+		border: 7px solid;
+		position: absolute;
+		#{$left}: 50%;
+		transform: if-ltr(translateX(-50%), translateX(50%));
+		bottom: 37px;
+		border-color: transparent;
+		border-bottom-color: $p-d-c;
+	}
+}
+@mixin text-line-hover($r1, $r2) {
+	&:hover {
+		.rhombus-1 { #{$right}: $r1 + px; }
+		.rhombus-2 { #{$right}: $r2 + px; }
+	}
+}

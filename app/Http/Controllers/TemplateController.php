@@ -21,8 +21,7 @@ class TemplateController extends Controller
     {
         Template::create([
             'name' => $request->name,
-            'nb_of_images' => $request->nb_of_images,
-            'nb_of_texts' => $request->nb_of_texts
+            'layout' => $request->layout
         ]);
         return redirect()->route('cms.templates.index');   
     }

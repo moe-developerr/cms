@@ -1,0 +1,23 @@
+.gallery {
+	@extend .pos--f;
+	@extend .zero--l;
+	@extend .zero--r;
+	@extend .zero--t;
+	@extend .zero--b;
+	@extend .zi--1000;
+	display: none;
+
+	.visible { display: block; }
+
+	.close {
+		@extend .dis--ib;
+		@extend .opacity--100;
+		@extend .fz--50;
+		width: 50px;	
+		height: 50px;
+	}
+	
+	.image.selected {
+		border: 3px solid;
+	}
+}

@@ -1,0 +1,10 @@
+.gallery {
+	background-color: rgba(#222, .8);
+	color: #fff;
+	.close {
+		color: #fff;
+	}
+	.image.selected {
+		border-color: #954120;
+	}
+}

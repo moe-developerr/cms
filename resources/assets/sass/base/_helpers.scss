@@ -1,0 +1,31 @@
+.fz {
+	@include m('30') { font-size: 30px;	}
+	@include m('50') { font-size: 50px;	}
+}
+.m {
+	@include m('b1') { margin-bottom: 10px; }
+}
+.zero {
+	@include m('l') { left: 0; }
+	@include m('r') { right: 0; }
+	@include m('t') { top: 0; }
+	@include m('b') { bottom: 0; }
+}
+.pos {
+	@include m('f') { position: fixed; }
+}
+.per-100 {
+	@include m('w') { width: 100%; }
+	@include m('h') { height: 100%; }
+}
+.opacity {
+	@include m('0') { opacity: 0; }
+	@include m('50') { opacity: .5; }
+	@include m('100') { opacity: 1; }
+}
+.zi {
+	@include m('1000') { z-index: 1000; }
+}
+.dis {
+	@include m('ib') { display: inline-block; }
+}

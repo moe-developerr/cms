@@ -12,12 +12,8 @@
 				<input type="text" name="name" id="template-name" class="form-control" value="{{ $template->name }}">
 			</div>
 			<div class="form-group">
-				<label for="template-images">Number Of Images</label>
-				<input type="text" name="nb_of_images" id="template-images" class="form-control" value="{{ $template->nb_of_images }}">
-			</div>
-			<div class="form-group">
-				<label for="template-texts">Number Of Texts</label>
-				<input type="text" name="nb_of_texts" id="template-texts" class="form-control" value="{{ $template->nb_of_texts }}">
+				<label for="template-layout">Layout</label>
+				<input type="text" name="layout" id="template-layout" class="form-control" value="{{ $template->layout }}">
 			</div>
 			<button class="btn btn-primary">UPDATE</button>
 		</form>

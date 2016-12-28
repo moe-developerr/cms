@@ -12,11 +12,13 @@
 
 	<link rel="icon" type="image/png" href="/favicon.png">
 	<link rel="stylesheet" href="/css/app.css">
+	@yield('links')
 <body>
 	<header class="layout-header">@include('partials.header')</header>
 	<section class="layout-content">@yield('content')</section>
 	<footer class="layout-footer">@include('partials.footer')</footer>
 
 	<script src="/js/app.js"></script>
+	@yield('scripts')
 </body>
 </html>

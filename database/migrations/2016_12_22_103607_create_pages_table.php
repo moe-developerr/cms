@@ -22,6 +22,7 @@ class CreatePagesTable extends Migration
             $table->string('meta_description')->nullable();
             $table->boolean('is_visible')->default(1);
             $table->integer('parent_id')->default(0);
+            $table->text('content');
             $table->timestamps();
 
             $table->foreign('template_id')->references('id')->on('templates')->onDelete('RESTRICT')->onUpdate('CASCADE');

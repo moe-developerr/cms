@@ -19,7 +19,11 @@
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                &nbsp;
+                @if(!Auth::guest())
+                <li><a href="{{ route('cms.pages.index') }}">Pages</a></li>
+                <li><a href="{{ route('cms.templates.index') }}">Templates</a></li>
+                <li><a href="{{ route('cms.images.index') }}">Images</a></li>
+                @endif
             </ul>
 
             <!-- Right Side Of Navbar -->

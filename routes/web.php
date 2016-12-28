@@ -47,6 +47,14 @@ Route::group(['prefix' => 'cms'], function () {
 	Route::get('templates', 'TemplateController@index')->name('cms.templates.index');
 	Route::get('templates/{id}/edit', 'TemplateController@edit');
 	Route::post('templates/{id}', 'TemplateController@update');
+
+	// images
+	Route::get('images/create', 'ImageController@create')->name('cms.images.create');
+	Route::post('images', 'ImageController@store')->name('cms.images.store');
+	Route::get('images', 'ImageController@index')->name('cms.images.index');
+	Route::get('images/{id}/edit', 'ImageController@edit');
+	Route::post('images/{id}', 'ImageController@update');
+	Route::delete('images/{id}', 'ImageController@destroy');
 });
 
 Route::get('{slug}', 'PageController@show')->where('slug', '[a-zA-Z0-9/-]*');

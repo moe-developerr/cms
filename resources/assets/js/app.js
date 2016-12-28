@@ -7,6 +7,7 @@
 
 require('./bootstrap');
 require('./components/select-change');
+require('./components/image-selection');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
