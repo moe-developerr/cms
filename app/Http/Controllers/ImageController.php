@@ -10,36 +10,17 @@ use Illuminate\Http\Request;
 
 class ImageController extends Controller
 {
-    private $image = [
-        'dimensions' => [
-            'small' => [
-                'w' => 250
-            ],
-            'medium' => [
-                'w' => 500
-            ],
-            'large' => [
-                'w' => 1000
-            ]
-        ]
-    ];
-
     public function __construct()
     {
     	$this->middleware('auth');
-    }
-
-    public function create()
-    {
-    	return view('cms.images.create');
     }
 
     public function store(Request $request)
     {
         $image = $request->file('image');
         $imageName = $this->uniqueName($image);
-        $this->resize($image, $imageName);
-        return $this->insertToDatabase($imageName);
+        $resizedImages = $this->resize($image, $imageName, $request->dimensions);
+        // return $this->insertToDatabase($resizedImages, $imageName);
     }
 
     public function index()
@@ -92,64 +73,31 @@ class ImageController extends Controller
         }
     }
 
-    private function resize($image, $imageName)
+    private function resize($image, $imageName, $dimensions)
     {
         $manager = new ImageManager();
-        $manager->make($image)->save(
-            public_path("uploads\images\default\\$imageName")
-        );
-        $manager->make($image)->resize(
-            $this->image['dimensions']['small']['w'],
-            null,
+        return $manager->make($image)->resize(
+            $dimensions['w'],
+            $dimensions['h'],
             function ($constraint) { $constraint->aspectRatio(); }
-        )->save(public_path("uploads\images\small\\$imageName"));
-        $manager->make($image)->resize(
-            $this->image['dimensions']['medium']['w'],
-            null,
-            function ($constraint) { $constraint->aspectRatio(); }
-        )->save(public_path("uploads\images\medium\\$imageName"));
-        $manager->make($image)->resize(
-            $this->image['dimensions']['large']['w'],
-            null,
-            function ($constraint) { $constraint->aspectRatio(); }
-        )->save(public_path("uploads\images\large\\$imageName"));
+        )->save(public_path("uploads\images\\$imageName"));
     }
 
-    private function insertToDatabase($imageName)
+    private function insertToDatabase($resizedImage, $imageName)
     {
         $default = Image::create([
-            'src' => $imageName,
-            'path' => public_path('uploads\images\default'),
-            'category' => 'default'
-        ]);
-        Image::create([
-            'src' => $imageName,
-            'path' => public_path('uploads\images\small'),
-            'category' => 'small'
-        ]);
-        Image::create([
-            'src' => $imageName,
-            'path' => public_path('uploads\images\medium'),
-            'category' => 'medium'
-        ]);
-        Image::create([
-            'src' => $imageName,
-            'path' => public_path('uploads\images\large'),
-            'category' => 'large'
+            'filename' => $imageName,
+            'url' => public_path('uploads\images'),
+            'dimensions' => $resizedImage->width.'x'.$resizedImage->height 
         ]);
         return $default;
     }
 
     private function uniqueName($image)
     {
-        $now = Carbon::now();
-        $imageName = $now->year.'_'.$now->month.'_'.$now->day.'_'.$now->timestamp.'_'.$image->getClientOriginalName();
-        
-        if(File::exists(public_path("uploads\images\default\\$imageName"))) {
-            $imageName = substr(sha1(mt_rand()), 0, 5) . '_' . $imageName;
-        }
-
-        return $imageName;
+        $imageName = $image->getClientOriginalName();
+        if(!File::exists(public_path("uploads\images\\$imageName"))) return $imageName;
+        return Carbon::now()->timestamp.'_'.$imageName;
     }
 
 }

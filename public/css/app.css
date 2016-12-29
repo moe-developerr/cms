@@ -8067,6 +8067,14 @@ button.close {
   font-size: 50px;
 }
 
+.m--t1 {
+  margin-top: 10px;
+}
+
+.m--t1-5 {
+  margin-top: 15px;
+}
+
 .m--b1 {
   margin-bottom: 10px;
 }
@@ -8079,7 +8087,7 @@ button.close {
   right: 0;
 }
 
-.zero--t, .gallery {
+.zero--t, .gallery, .gallery .close {
   top: 0;
 }
 
@@ -8087,7 +8095,7 @@ button.close {
   bottom: 0;
 }
 
-.pos--f, .gallery {
+.pos--f, .gallery, .gallery .close {
   position: fixed;
 }
 
@@ -8111,6 +8119,10 @@ button.close {
   opacity: 1;
 }
 
+.zi--1, .gallery .close {
+  z-index: 1;
+}
+
 .zi--1000, .gallery {
   z-index: 1000;
 }
@@ -8119,15 +8131,32 @@ button.close {
   display: inline-block;
 }
 
+.overflow--h {
+  overflow: hidden;
+}
+
+.overflow--ya {
+  overflow-y: auto;
+}
+
+.clear--l {
+  clear: left;
+}
+
+.resize--v {
+  resize: vertical;
+}
+
 .gallery {
   display: none;
 }
 
-.gallery .visible {
+.gallery.visible {
   display: block;
 }
 
 .gallery .close {
+  right: 17px;
   width: 50px;
   height: 50px;
 }

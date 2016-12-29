@@ -17,5 +17,11 @@
 			</div>
 			<button class="btn btn-primary">UPDATE</button>
 		</form>
+		<form action="{{ url('cms/templates/'.$template->id) }}" method="POST" class="m--t1-5">
+			{{ csrf_field() }}
+			{{ method_field('DELETE') }}
+			<input type="hidden" name="is_ajax" value="false">
+			<button class="btn btn-danger">DELETE</button>
+		</form>
 	</div>
 @stop

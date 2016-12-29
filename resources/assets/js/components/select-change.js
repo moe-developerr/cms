@@ -13,8 +13,8 @@
 
 	function loadPageContent()
 	{
-		$.ajax({
-			// url: 'cms/pages/'
+		$('.page-content').load('/resources/views/templates/load.html', function () {
+			console.log('loaded html');
 		});
 	}
 })();

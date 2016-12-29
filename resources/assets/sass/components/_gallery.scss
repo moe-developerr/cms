@@ -7,12 +7,16 @@
 	@extend .zi--1000;
 	display: none;
 
-	.visible { display: block; }
+	&.visible { display: block; }
 
 	.close {
+		@extend .zi--1;
+		@extend .pos--f;
+		@extend .zero--t;
 		@extend .dis--ib;
 		@extend .opacity--100;
 		@extend .fz--50;
+		right: 17px;
 		width: 50px;	
 		height: 50px;
 	}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\File;
 use App\Template;
 use Illuminate\Http\Request;
 
@@ -19,11 +20,18 @@ class TemplateController extends Controller
 
     public function store(Request $request)
     {
-        Template::create([
-            'name' => $request->name,
-            'layout' => $request->layout
-        ]);
-        return redirect()->route('cms.templates.index');   
+        $name = $request->name;
+        $layout = File::get($request->layoutFile);
+
+        if(!empty($name) && !empty($layout) && $request->layoutFile->extension() == 'html') {
+            return Template::create([
+                'name' => $name,
+                'layout' => $layout
+            ]);
+            return redirect()->route('cms.templates.index');
+        } else {
+            return response(['message' => 'Failed to Upload']);
+        }
     }
 
     public function index()
@@ -42,9 +50,20 @@ class TemplateController extends Controller
     {
         $template = Template::findOrFail($id);
         $template->name = $request->name;
-        $template->nb_of_images = $request->nb_of_images;
-        $template->nb_of_texts = $request->nb_of_texts;
+        $template->layout = $request->layout;
         $template->save();
         return back();
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        $isDestroyed = Template::destroy($id);
+        if($request->is_ajax === 'true') {
+            if($isDestroyed == 1) return $isDestroyed;
+            return 0;
+        } else if($request->is_ajax === 'false') {
+            if($isDestroyed == 1) return redirect()->route('cms.templates.index');
+            return back();
+        }
     }
 }

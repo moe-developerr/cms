@@ -14,6 +14,5 @@
 				@endforeach
 			</ol>
 		@endif
-		<a href="{{ route('cms.images.create') }}" class="btn btn-primary">UPLOAD</a>
 	</div>
 @stop
