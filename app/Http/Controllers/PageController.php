@@ -20,28 +20,28 @@ class PageController extends Controller
     {
         $templates = Template::all();
         $pages = Page::all();
-        $images = Image::all();
-        foreach($images as $image) {
-            if($image->category == 'default') $default[] = $image;
-            else if($image->category == 'small') $small[] = $image;
-            else if($image->category == 'medium') $medium[] = $image;
-            else if($image->category == 'large') $large[] = $image;
-        }
-        return view('cms.pages.create', compact('templates', 'pages', 'default', 'small', 'medium', 'large'));
+        return view('cms.pages.create', compact('templates', 'pages'));
     }
 
     public function store(Request $request)
     {
-        Page::create([
-            'template_id' => $request->template_id,
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'title' => $request->title,
-            'meta_description' => $request->meta_description,
-            'is_visible' => $request->is_visible,
-            'parent_id' => $request->parent_id
-        ]);
-        return redirect()->route('cms.pages.index');
+        $isAjax = $request->is_ajax === 'true' ? true : false;
+        if($isAjax) {
+
+        }
+        else {
+            Page::create([
+                'template_id' => $request->template_id,
+                'name' => $request->name,
+                'slug' => $request->slug,
+                'title' => $request->title,
+                'meta_description' => $request->meta_description,
+                'is_visible' => $request->is_visible,
+                'parent_id' => $request->parent_id,
+                'content' => json_encode($request->content)
+            ]);
+            return redirect()->route('cms.pages.index');
+        }
     }
 
     public function show($slug)
@@ -57,10 +57,10 @@ class PageController extends Controller
 
     public function edit($id)
     {
-        $page = Page::findOrFail($id);
-    	// get the page from database
-    	// send the page data to the view
-    	return view('cms.pages.edit', compact('page'));
+        $myPage = Page::findOrFail($id);
+        $templates = Template::all();
+        $pages = Page::all();
+    	return view('cms.pages.edit', compact('myPage', 'templates', 'pages'));
     }
 
     public function update(Request $request)

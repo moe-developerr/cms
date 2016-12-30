@@ -7,7 +7,8 @@
 		<h1>Create Template</h1>
 		<form action="{{ route('cms.templates.store') }}" method="POST" class="dropzone" id="layoutFile">
 			{{ csrf_field() }}
-			<input type="hidden" name="is_ajax" value="true">
+			<input type="hidden" name="is_ajax" value="true" id="is_ajax">
+			<input type="hidden" name="on_delete_file" value="delete_row" id="on_delete_file">
 			<div class="form-group">
 				<label for="template-name">Name</label>
 				<input type="text" name="name" id="template-name" class="form-control" required>
@@ -36,7 +37,6 @@
 
 			function setDropzoneOptions()
 			{
-				var deletePromise, uploadPromise;
 				var $success = $('.success');
 				var $error = $('.error');
 				Dropzone.options.layoutFile = {
@@ -55,11 +55,11 @@
 				            $.ajax({
 				                url: '/cms/templates/'+id,
 				                method: 'DELETE',
-				                data: { id: id },
+				                data: { id: id, is_ajax: $('#is_ajax').val(), on_delete_file: $('#on_delete_file').val() },
 				                error: function (r) {
 				    				$error.text('Failed to Delete').removeClass('hidden');
-									clearTimeout(uploadPromise);
-				                	deletePromise = setTimeout(function () {
+	                				$success.addClass('hidden');
+				                	setTimeout(function () {
 				                		$success.add($error).addClass('hidden');
 				                	}, 3000);
 				                },
@@ -70,8 +70,7 @@
 				                	}
 				                	else $error.text('Failed to delete').removeClass('hidden');
 
-				                	clearTimeout(uploadPromise);
-				                	deletePromise = setTimeout(function () {
+				                	setTimeout(function () {
 				                		$success.add($error).addClass('hidden');
 				                	}, 3000);
 				                }
@@ -80,8 +79,8 @@
 				    },
 				    error: function(file, response) {
 				    	$error.text('Failed to Upload').removeClass('hidden');
-				    	clearTimeout(deletePromise);
-	                	uploadPromise = setTimeout(function () {
+	                	$success.addClass('hidden');
+	                	setTimeout(function () {
 	                		$success.add($error).addClass('hidden');
 	                	}, 3000);
 				    },
@@ -92,8 +91,7 @@
 				    	}
 	                	else $error.text(r.message).removeClass('hidden');
 
-				        clearTimeout(deletePromise);
-	                	uploadPromise = setTimeout(function () {
+	                	setTimeout(function () {
 	                		$success.add($error).addClass('hidden');
 	                	}, 3000);
 				    }

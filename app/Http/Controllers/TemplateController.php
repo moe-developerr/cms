@@ -22,7 +22,7 @@ class TemplateController extends Controller
     {
         $name = $request->name;
         $layout = File::get($request->layoutFile);
-
+        
         if(!empty($name) && !empty($layout) && $request->layoutFile->extension() == 'html') {
             return Template::create([
                 'name' => $name,
@@ -40,6 +40,12 @@ class TemplateController extends Controller
     	return view('cms.templates.index', compact('templates'));
     }
 
+    public function show($id)
+    {
+        $template = Template::findOrFail($id);
+        return $template->layout;
+    }
+
     public function edit($id)
     {
     	$template = Template::findOrFail($id);
@@ -48,20 +54,36 @@ class TemplateController extends Controller
 
     public function update(Request $request, $id)
     {
-        $template = Template::findOrFail($id);
-        $template->name = $request->name;
-        $template->layout = $request->layout;
-        $template->save();
-        return back();
+        $name = $request->name;
+        $layout = File::get($request->layoutFile);
+
+        if(!empty($name) && !empty($layout) && $request->layoutFile->extension() == 'html') {
+            $template = Template::findOrFail($id);
+            $template->name = $request->name;
+            $template->layout = $layout;
+            $template->save();
+            return response(['template' => $template, 'message' => 'Successful Upload', 'status' => 200]);
+        } else {
+            return response(['message' => 'Failed to Upload']);
+        }
     }
 
     public function destroy(Request $request, $id)
     {
-        $isDestroyed = Template::destroy($id);
         if($request->is_ajax === 'true') {
-            if($isDestroyed == 1) return $isDestroyed;
-            return 0;
+            if($request->on_delete_file === 'delete_column') {
+                $template = Template::findOrFail($id);
+                $template->layout = '';
+                $template->save();
+                return 1;
+            }
+            else if($request->on_delete_file === 'delete_row') {
+                $isDestroyed = Template::destroy($id);
+                if($isDestroyed == 1) return $isDestroyed;
+                return 0;
+            }
         } else if($request->is_ajax === 'false') {
+            $isDestroyed = Template::destroy($id);
             if($isDestroyed == 1) return redirect()->route('cms.templates.index');
             return back();
         }

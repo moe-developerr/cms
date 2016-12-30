@@ -39,21 +39,22 @@ Route::group(['prefix' => 'cms'], function () {
 	Route::post('pages', 'PageController@store')->name('cms.pages.store');
 	Route::get('pages', 'PageController@index')->name('cms.pages.index');
 	Route::get('pages/{id}/edit', 'PageController@edit');
-	Route::put('pages/{id}', 'PageController@update');
+	Route::patch('pages/{id}', 'PageController@update');
 
 	// templates
 	Route::get('templates/create', 'TemplateController@create')->name('cms.templates.create');
 	Route::post('templates', 'TemplateController@store')->name('cms.templates.store');
 	Route::get('templates', 'TemplateController@index')->name('cms.templates.index');
+	Route::get('templates/{id}', 'TemplateController@show')->name('cms.templates.show');
 	Route::get('templates/{id}/edit', 'TemplateController@edit');
-	Route::post('templates/{id}', 'TemplateController@update');
+	Route::patch('templates/{id}', 'TemplateController@update');
 	Route::delete('templates/{id}', 'TemplateController@destroy');
 
 	// images
 	Route::post('images', 'ImageController@store')->name('cms.images.store');
 	Route::get('images', 'ImageController@index')->name('cms.images.index');
 	Route::get('images/{id}/edit', 'ImageController@edit');
-	Route::post('images/{id}', 'ImageController@update');
+	Route::patch('images/{id}', 'ImageController@update');
 	Route::delete('images/{id}', 'ImageController@destroy');
 });
 

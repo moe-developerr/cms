@@ -1,0 +1,20 @@
+<div class="form-group">
+	<label>Top Image</label>
+	<form action="/cms/pages" method="POST" name="content[top_image]" class="dropzone" id="top_image">
+		<input type="hidden" name="_token" value="AcD3LoGgiiAFAhPjuwSLen9gE00NH96ZYT2LKhSs">
+		<input type="hidden" name="is_ajax" value="true">
+	</form>
+</div>
+<div class="form-group">
+	<label>Top Text</label>
+	<textarea name="content[top_text]" id="" cols="30" rows="10" class="form-control" style="resize: vertical;"></textarea>
+</div>
+
+<script>
+	$("#top_image").dropzone({
+		maxFiles: 1,
+		success: function (file, r) {
+			console.log(r);
+		}
+	});
+</script>

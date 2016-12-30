@@ -18,7 +18,7 @@
 							<label for="template">Choose Template</label>
 							<select name="template_id" id="template" class="form-control" required>
 								@foreach($templates as $template)
-									<option value="{{ $template->id }}">{{ $template->name }}</option>
+									<option value="{{ $template->id }}" {{ $template->name == 'Default' ? 'selected' : '' }}>{{ $template->name }}</option>
 								@endforeach
 							</select>
 						</div>
@@ -28,27 +28,26 @@
 						</div>
 						<div class="form-group">
 							<label for="page-slug">Page Slug</label>
-							<input type="text" name="slug" id="page-slug" class="form-control" required>
+							<input type="text" name="slug" id="page-slug" class="form-control">
 						</div>
 						<div class="form-group">
 							<label for="page-title">Page Title</label>
-							<input type="text" name="title" id="page-title" class="form-control" required>
+							<input type="text" name="title" id="page-title" class="form-control">
 						</div>
 						<div class="form-group">
 							<label for="meta-description">Meta Description</label>
-							<input type="text" name="meta_description" id="meta-description" class="form-control" required>
+							<input type="text" name="meta_description" id="meta-description" class="form-control">
 						</div>
 						<div class="form-group">
 							<label for="page-visibility">Page Visibility</label>
-							<select name="is_visible" id="page-visibility" class="form-control" required>
+							<select name="is_visible" id="page-visibility" class="form-control">
 								<option value="0">0</option>
 								<option value="1" selected>1</option>
 							</select>
 						</div>
 						<div class="form-group">
 							<label for="page-parent">Choose Parent</label>
-							<select name="parent_id" id="page-parent" class="form-control" required>
-								<option value="0" selected>Default</option>
+							<select name="parent_id" id="page-parent" class="form-control">
 								@foreach($pages as $page)
 									<option value="{{ $page->parent_id }}">{{ $page->name }}</option>
 								@endforeach
@@ -68,35 +67,29 @@
 			</div>
 		</form>
 	</div>
-	<div class="gallery">
-		<button type="button" class="close" aria-label="Close"><span aria-hidden="true" class="dis--ib">&times;</span></button>
-		<div class="container">
-			<div class="row">
-				@if(isset($small))
-					<div class="col-xs-12"><h2>Small</h2></div>
-					@foreach($small as $sm)
-						<div class="col-xs-6 col-sm-3"><img src="/uploads/images/small/{{ $sm->src }}" data-id="{{ $sm->id }}" alt="" class="img-responsive image"></div>
-					@endforeach
-				@endif
-				@if(isset($medium))
-					<div class="col-xs-12"><hr><h2>Medium</h2></div>
-					@foreach($medium as $md)
-						<div class="col-xs-6 col-sm-3"><img src="/uploads/images/medium/{{ $md->src }}" data-id="{{ $md->id }}" alt="" class="img-responsive image"></div>
-					@endforeach
-				@endif
-				@if(isset($large))
-					<div class="col-xs-12"><hr><h2>Large</h2></div>
-					@foreach($large as $lg)
-						<div class="col-xs-6 col-sm-3"><img src="/uploads/images/large/{{ $lg->src }}" data-id="{{ $lg->id }}" alt="" class="img-responsive image"></div>
-					@endforeach
-				@endif
-				@if(isset($default))
-					<div class="col-xs-12"><hr><h2>Default</h2></div>
-					@foreach($default as $df)
-						<div class="col-xs-6 col-sm-3"><img src="/uploads/images/default/{{ $df->src }}" data-id="{{ $df->id }}" alt="" class="img-responsive image"></div>
-					@endforeach
-				@endif
-			</div>
-		</div>
-	</div>
+@stop
+
+@section('scripts')
+	<script src="/js/vendors/dropzone.js"></script>
+	<script>
+		(function () {
+			run();
+
+			function run()
+			{
+				Dropzone.autoDiscover = false;
+				attachEvents();
+			}
+
+			function attachEvents()
+			{
+				$('#template').change(loadTemplateForm).change();
+			}
+
+			function loadTemplateForm()
+			{
+				$('.page-content').load('/cms/templates/' + $(this).val());
+			}
+		})();
+	</script>
 @stop

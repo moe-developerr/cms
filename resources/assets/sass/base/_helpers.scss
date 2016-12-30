@@ -6,6 +6,7 @@
 	@include m('t1') { margin-top: 10px; }
 	@include m('t1-5') { margin-top: 15px; }
 	@include m('b1') { margin-bottom: 10px; }
+	@include m('l1') { margin-left: 10px; }
 }
 .zero {
 	@include m('l') { left: 0; }

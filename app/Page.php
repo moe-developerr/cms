@@ -13,6 +13,7 @@ class Page extends Model
 		'title',
 		'meta_description',
 		'is_visible',
-		'parent_id'
+		'parent_id',
+		'content'
 	];
 }
